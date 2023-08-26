@@ -1,0 +1,75 @@
+{
+  "publisher": "deuscx",
+  "name": "pkg-name",
+  "displayName": "pkg-name",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@8.6.10",
+  "description": "",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/deuscx",
+  "homepage": "https://github.com/deuscx/pkg-name#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deuscx/pkg-name"
+  },
+  "bugs": {
+    "url": "https://github.com/deuscx/pkg-name/issues"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/index.js",
+  "icon": "res/icon.png",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "vscode": "^1.78.1"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "pkg-name.helloWorld",
+        "title": "Hello World"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --external vscode",
+    "dev": "nr build --watch",
+    "lint": "eslint .",
+    "vscode:prepublish": "nr build",
+    "publish": "vsce publish --no-dependencies",
+    "pack": "vsce package --no-dependencies",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "release": "bumpp && nr publish"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.39.8",
+    "@types/node": "^20.4.5",
+    "@types/vscode": "^1.80.0",
+    "@vscode/vsce": "^2.20.0",
+    "bumpp": "^9.1.1",
+    "eslint": "^8.45.0",
+    "lint-staged": "^13.2.3",
+    "rimraf": "^5.0.1",
+    "simple-git-hooks": "^2.9.0",
+    "tsup": "^7.1.0",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.7",
+    "vitest": "^0.33.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,vue,md}": [
+      "eslint --fix"
+    ]
+  }
+}
