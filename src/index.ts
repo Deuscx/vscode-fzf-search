@@ -1,12 +1,29 @@
-import type { ExtensionContext } from 'vscode'
-import { commands, window } from 'vscode'
+import path from 'node:path'
+import type { ExtensionContext, Terminal } from 'vscode'
+import { Uri, commands, window } from 'vscode'
 
+let term: Terminal | undefined
+
+function getTerminal() {
+  if (term)
+    return term
+
+  term = window.createTerminal({
+    name: 'fzfsearch',
+    hideFromUser: true,
+  })
+  return term
+}
+
+function searchFile(context: ExtensionContext) {
+  const fzf = getTerminal()
+  fzf.show()
+  const scriptPath = Uri.file(path.join(context.extensionPath, './src/search.mjs'))
+  fzf.sendText(`zx ${scriptPath.fsPath}`)
+}
 export function activate(context: ExtensionContext) {
-  window.showInformationMessage('Hello')
-  const disposable = commands.registerCommand('pkg-name.helloWorld', () => {
-    // The code you place here will be executed every time your command is executed
-    // Display a message box to the user
-    window.showInformationMessage('Hello World from pkg-name!')
+  const disposable = commands.registerCommand('fzf-search.searchFile', () => {
+    searchFile(context)
     context.subscriptions.push(disposable)
   })
 }
